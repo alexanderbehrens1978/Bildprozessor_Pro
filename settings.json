@@ -1,0 +1,35 @@
+{
+    "poppler_path": "",
+    "layers": [
+        {
+            "layer": 1,
+            "enabled": true,
+            "filter": "Negativ",
+            "strength": 1.0
+        },
+        {
+            "layer": 2,
+            "enabled": true,
+            "filter": "Negativ",
+            "strength": 1.0
+        },
+        {
+            "layer": 3,
+            "enabled": true,
+            "filter": "Negativ",
+            "strength": 1.0
+        },
+        {
+            "layer": 4,
+            "enabled": true,
+            "filter": "Negativ",
+            "strength": 1.0
+        },
+        {
+            "layer": 5,
+            "enabled": true,
+            "filter": "Negativ",
+            "strength": 1.0
+        }
+    ]
+}
