@@ -1,3 +1,3 @@
-schlechtes Scans lesbar machen
+schlechte Scans lesbar machen
 
 pip install Pillow
