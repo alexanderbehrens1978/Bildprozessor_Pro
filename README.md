@@ -21,3 +21,7 @@ pyinstaller --clean -w --add-data "C:\Users\axell\source\Bildprozessor_Pro\poppl
 Im Ordner dist\Bildprozessor_Pro liegt die Bildprozessor_Pro.exe Datei zum ausführen. Den Ordner _internal braucht das Programm zum arbeiten.
 
 Im vor dem ersteller einer neuen Exe Datei den dist Ordner löschen
+
+Zum Installieren unter Windows die win_version_1_0_*.rar Dateien runterladen und mit winrar entpacken.
+
+Die Bildprozessor Pro Exe starten und die Einstellungen einmal speichern.
