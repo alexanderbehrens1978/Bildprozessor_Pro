@@ -21,7 +21,7 @@ def get_program_path():
 class ImageProcessorApp:
     def __init__(self, root):
         self.root = root
-        self.root.title("Bildprozessor Pro   Version 1.0    20.02.2025 von Alexander Behrens info@alexanderbehrens.com")
+        self.root.title("Bildprozessor Pro   Version 1.0    21.02.2025 von Alexander Behrens info@alexanderbehrens.com")
 
         # Standardmäßig ist der Poppler-Pfad leer
         self.poppler_path = ""
