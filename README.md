@@ -1,4 +1,4 @@
-# schlechte Scans lesbar machen
+# schlechte Scans / Faxe / Kopien / Kassenbons lesbar machen
 
 pip install Pillow
 
