@@ -1,3 +1,35 @@
 {
-    "poppler_path": "C:/Users/axell/source/Bildprozessor_Pro/poppler/Library/bin"
+    "poppler_path": "C:/Users/axell/source/Bildprozessor_Pro/poppler/Library/bin",
+    "layers": [
+        {
+            "layer": 1,
+            "enabled": false,
+            "filter": "Negativ",
+            "strength": 1.0
+        },
+        {
+            "layer": 2,
+            "enabled": false,
+            "filter": "Negativ",
+            "strength": 1.0
+        },
+        {
+            "layer": 3,
+            "enabled": false,
+            "filter": "Negativ",
+            "strength": 1.0
+        },
+        {
+            "layer": 4,
+            "enabled": false,
+            "filter": "Negativ",
+            "strength": 1.0
+        },
+        {
+            "layer": 5,
+            "enabled": false,
+            "filter": "Negativ",
+            "strength": 1.0
+        }
+    ]
 }

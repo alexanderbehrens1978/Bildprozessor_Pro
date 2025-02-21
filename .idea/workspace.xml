@@ -4,8 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b1bc77f8-5a41-4fd7-b40e-309b8697bd84" name="Changes" comment="PDF können gelesen werden.&#10;Die Höhen der Vorschaufenster sind gleich&#10;Die Einstellungsdatei wird im Programmpfad gespeichert.&#10;In dem Einstellungsmenü gibt einen Link zu poppler">
-      <change afterPath="$PROJECT_DIR$/icoerstellen.py" afterDir="false" />
+    <list default="true" id="b1bc77f8-5a41-4fd7-b40e-309b8697bd84" name="Changes" comment="mehrseitige pdfs gehen noch nicht">
+      <change afterPath="$PROJECT_DIR$/bildprozessor_pro.ico" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Bildprozessor_Pro.py" beforeDir="false" afterPath="$PROJECT_DIR$/Bildprozessor_Pro.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/settings.json" beforeDir="false" afterPath="$PROJECT_DIR$/settings.json" afterDir="false" />
@@ -46,16 +46,16 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Python.Bildprozessor_Pro.executor": "Run",
-    "Python.icoerstellen.executor": "Run",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "master",
-    "settings.editor.selected.configurable": "preferences.pluginManager"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Python.Bildprozessor_Pro.executor&quot;: &quot;Run&quot;,
+    &quot;Python.icoerstellen.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;
   }
-}]]></component>
+}</component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
@@ -72,6 +72,30 @@
       <option name="presentableId" value="Default" />
       <updated>1739959535772</updated>
     </task>
+    <task id="LOCAL-00001" summary="mehrseitige pdfs gehen noch nicht">
+      <option name="closed" value="true" />
+      <created>1740134871448</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1740134871448</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="mehrseitige pdfs gehen noch nicht" />
+    <option name="LAST_COMMIT_MESSAGE" value="mehrseitige pdfs gehen noch nicht" />
   </component>
 </project>
