@@ -4,6 +4,9 @@ pip install Pillow
 
 pip install pdf2image
 
+![image](https://github.com/user-attachments/assets/36c7908a-8193-4dba-b861-a94dfa493b12)
+
+
 Zum erstellen der exe Datei
 
 pip install pyinstaller
