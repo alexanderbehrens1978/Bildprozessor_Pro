@@ -25,3 +25,7 @@ Im vor dem ersteller einer neuen Exe Datei den dist Ordner löschen
 Zum Installieren unter Windows die win_version_1_0_*.rar Dateien runterladen und mit winrar entpacken.
 
 Die Bildprozessor Pro Exe starten und die Einstellungen einmal speichern.
+
+Aktuell kann ich nur eine Seite der PDF Dateien anzeigen lassen.
+
+ToDo alle PDF Seiten anzeigen lassen und durchblättern können
