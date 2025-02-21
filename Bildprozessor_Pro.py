@@ -7,6 +7,7 @@ import os
 import subprocess
 import sys
 
+
 def get_program_path():
     """Gibt den Ordner zurück, in dem die EXE liegt (bei gebündelter Anwendung)
     oder in dem das Skript liegt."""
@@ -141,17 +142,16 @@ class ImageProcessorApp:
         tk.Button(top, text="Schließen", command=top.destroy).pack(pady=10)
 
     def get_poppler_path(self):
-        # Im gebündelten Zustand wird der Ordner _internal\poppler_bin\bin verwendet
+        """Gibt den Poppler-Pfad zurück, abhängig davon, ob das Skript als EXE läuft oder nicht."""
         if getattr(sys, 'frozen', False):
-            return os.path.join(sys._MEIPASS, "_internal", "poppler_bin", "bin")
+            return os.path.join(sys._MEIPASS, "poppler_bin", "bin")
         else:
-            auto_path = os.path.join(get_program_path(), "_internal", "poppler_bin", "bin")
-            if self.poppler_path:
-                return self.poppler_path
-            elif os.path.exists(auto_path):
+            auto_path = os.path.join(get_program_path(), "poppler_bin", "bin")
+            if os.path.exists(auto_path):
                 return auto_path
-            else:
-                return ""
+            if os.path.exists(self.poppler_path):
+                return self.poppler_path
+            return ""
 
     def create_widgets(self):
         main_frame = tk.Frame(self.root)
