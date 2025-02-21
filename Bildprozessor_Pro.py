@@ -7,30 +7,38 @@ import os
 import subprocess
 import sys
 
+# ToDo
+# mehrseitige PDF Dateien gehen noch nicht !
+
 def get_program_path():
-    """Gibt den Ordner zurück, in dem die EXE liegt (bei gebündelter Anwendung)
-    oder in dem das Skript liegt."""
+    """Gibt den Ordner zurück, in dem die EXE liegt (bei gebündelter Anwendung) oder in dem das Skript liegt."""
     if getattr(sys, 'frozen', False):
         return os.path.dirname(sys.executable)
     else:
         return os.path.dirname(os.path.abspath(__file__))
 
+
 class ImageProcessorApp:
     def __init__(self, root):
         self.root = root
-        self.root.title("Bildprozessor Pro 20.02.2025 von Alexander Behrens info@alexanderbehrens.com")
+        self.root.title("Bildprozessor Pro   Version 1.0    20.02.2025 von Alexander Behrens info@alexanderbehrens.com")
 
-        self.poppler_path = ""  # Standardmäßig leer
+        # Standardmäßig ist der Poppler-Pfad leer
+        self.poppler_path = ""
+        # Standardwert für die angezeigte Einstellungsdatei
         self.settings_file_name = "Keine Einstellungen geladen"
 
+        # Versuche, eine settings.json im Programmordner zu laden
         self.load_default_settings()
+
         self.create_menu()
 
+        # Variablen initialisieren
         self.original_image = None
         self.processed_image = None
         self.filename = None
         self.layer_vars = []
-        # 20 Filteroptionen – Mindestfilter sind "Negativ", "Multiplikation" und "Helligkeit"
+        # 20 Filteroptionen, die u.a. dafür gedacht sind, fast leere oder schwer lesbare Dokumente lesbarer zu machen
         self.filter_options = [
             "Negativ",
             "Multiplikation",
@@ -55,6 +63,7 @@ class ImageProcessorApp:
         ]
 
         self.create_widgets()
+        # Erstelle die Layer-Regler im separaten Slider-Bereich
         self.create_layers_ui(self.slider_frame)
 
     def load_default_settings(self):
@@ -77,6 +86,7 @@ class ImageProcessorApp:
     def create_menu(self):
         menu_bar = tk.Menu(self.root)
 
+        # Datei-Menü
         file_menu = tk.Menu(menu_bar, tearoff=0)
         file_menu.add_command(label="Bild laden", command=self.load_image)
         file_menu.add_command(label="Bild speichern", command=self.save_image)
@@ -87,6 +97,7 @@ class ImageProcessorApp:
         file_menu.add_command(label="Beenden", command=self.root.quit)
         menu_bar.add_cascade(label="Datei", menu=file_menu)
 
+        # Einstellungen-Menü
         settings_menu = tk.Menu(menu_bar, tearoff=0)
         settings_menu.add_command(label="Poppler Pfad setzen", command=self.set_poppler_path)
         settings_menu.add_command(label="Poppler installieren", command=self.install_poppler)
@@ -96,7 +107,7 @@ class ImageProcessorApp:
 
     def set_poppler_path(self):
         prog_path = get_program_path()
-        path = filedialog.askdirectory(title="Wähle den Poppler-Library-Bin-Ordner", initialdir=prog_path)
+        path = filedialog.askdirectory(title=r"Wähle den _internal\poppler_bin\bin-Ordner", initialdir=prog_path)
         if path:
             self.poppler_path = path
             messagebox.showinfo("Poppler Pfad", f"Poppler Pfad gesetzt auf:\n{self.poppler_path}")
@@ -142,6 +153,8 @@ class ImageProcessorApp:
         tk.Button(top, text="Schließen", command=top.destroy).pack(pady=10)
 
     def get_poppler_path(self):
+        # Im gebündelten Zustand gehen wir davon aus, dass der Ordner "poppler_bin" eingebunden wurde
+        # und sich im Unterordner "bin" die benötigte pdftoppm.exe befindet.
         if getattr(sys, 'frozen', False):
             return os.path.join(sys._MEIPASS, "poppler_bin", "bin")
         else:
@@ -151,6 +164,7 @@ class ImageProcessorApp:
         main_frame = tk.Frame(self.root)
         main_frame.pack(fill=tk.BOTH, expand=True)
 
+        # Top-Bereich: Anzeige von Bild- und Einstellungsdatei
         top_frame = tk.Frame(main_frame)
         top_frame.pack(fill=tk.X, padx=10, pady=5)
         self.filename_label = tk.Label(top_frame, text="Kein Bild geladen", anchor="w")
@@ -158,17 +172,21 @@ class ImageProcessorApp:
         self.settings_label = tk.Label(top_frame, text="Einstellungen: " + self.settings_file_name, anchor="e")
         self.settings_label.pack(side=tk.RIGHT)
 
+        # Vorschaufenster-Bereich
         preview_frame = tk.Frame(main_frame)
         preview_frame.pack(fill=tk.BOTH, expand=True, padx=10, pady=10)
 
+        # Linker Bereich für Originalbild
         left_frame = tk.Frame(preview_frame)
         left_frame.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
         self.left_canvas = self.create_image_canvas(left_frame)
 
+        # Rechter Bereich für bearbeitetes Bild
         right_frame = tk.Frame(preview_frame)
         right_frame.pack(side=tk.RIGHT, fill=tk.BOTH, expand=True)
         self.right_canvas = self.create_image_canvas(right_frame)
 
+        # Regler-Bereich unterhalb der Vorschau
         self.slider_frame = tk.Frame(main_frame)
         self.slider_frame.pack(fill=tk.X, padx=10, pady=10)
 
@@ -187,13 +205,12 @@ class ImageProcessorApp:
         return canvas
 
     def create_layers_ui(self, parent):
+        # Erstelle die 20 Filter-Regler in einem horizontalen Layout innerhalb des übergebenen Eltern-Widgets
         layers_frame = tk.Frame(parent)
         layers_frame.pack(fill=tk.X)
-        layers_frame.grid_columnconfigure(0, weight=1)  # Leere Spalte links für Rechtsausrichtung
-
         for i in range(5):
             sub_frame = tk.Frame(layers_frame, borderwidth=1, relief=tk.GROOVE)
-            sub_frame.grid(row=0, column=i+1, padx=5, pady=5, sticky="nsew")
+            sub_frame.grid(row=0, column=i, padx=5, pady=5, sticky="nsew")
 
             label = tk.Label(sub_frame, text=f"Filter {i + 1}", font=("Arial", 10, "bold"))
             label.grid(row=0, column=0, columnspan=2, pady=(2, 5))
@@ -207,9 +224,8 @@ class ImageProcessorApp:
             cb.current(0)
             cb.grid(row=1, column=1, padx=5, pady=2)
 
-            # Schieberegler: Werte von 0.0 bis 1.0
             strength_var = tk.DoubleVar(value=1.0)
-            slider = tk.Scale(sub_frame, from_=0.0, to=1.0, resolution=0.01, orient=tk.HORIZONTAL,
+            slider = tk.Scale(sub_frame, from_=0.1, to=10.0, resolution=0.1, orient=tk.HORIZONTAL,
                               variable=strength_var, command=self.update_image, length=150)
             slider.grid(row=2, column=0, columnspan=2, padx=5, pady=(2, 5))
 
@@ -303,86 +319,58 @@ class ImageProcessorApp:
     def apply_filter(self, img, filter_name, strength=1.0):
         try:
             if filter_name == "Negativ":
-                blend_factor = min(max(strength, 0), 1)
-                inverted = ImageOps.invert(img)
-                return Image.blend(img, inverted, blend_factor)
+                return ImageOps.invert(img)
             elif filter_name == "Multiplikation":
-                blend_factor = min(max(strength, 0), 1)
-                overlay_value = int(255 * blend_factor)
-                overlay = Image.new("RGB", img.size, (overlay_value, overlay_value, overlay_value))
+                overlay = Image.new("RGB", img.size, (int(255 * strength), int(255 * strength), int(255 * strength)))
                 return ImageChops.multiply(img, overlay)
             elif filter_name == "Helligkeit":
-                enhancer = ImageEnhance.Brightness(img)
-                effect = enhancer.enhance(2.0)
-                return Image.blend(img, effect, strength)
+                return ImageOps.autocontrast(img, cutoff=strength * 10)
             elif filter_name == "Kontrast":
-                enhancer = ImageEnhance.Contrast(img)
-                effect = enhancer.enhance(2.0)
-                return Image.blend(img, effect, strength)
+                return ImageOps.autocontrast(img)
             elif filter_name == "Schärfen":
-                enhancer = ImageEnhance.Sharpness(img)
-                effect = enhancer.enhance(2.0)
-                return Image.blend(img, effect, strength)
+                return img.filter(ImageFilter.SHARPEN)
             elif filter_name == "Weichzeichnen":
-                effect = img.filter(ImageFilter.GaussianBlur(radius=5))
-                return Image.blend(img, effect, strength)
+                return img.filter(ImageFilter.BLUR)
             elif filter_name == "Graustufen":
-                blend_factor = min(max(strength, 0), 1)
-                gray = img.convert("L").convert("RGB")
-                return Image.blend(img, gray, blend_factor)
+                return img.convert("L").convert("RGB")
             elif filter_name == "Sepia":
-                blend_factor = min(max(strength, 0), 1)
-                gray = img.convert("L")
-                sepia = ImageOps.colorize(gray, "#704214", "#C0A080")
-                return Image.blend(img, sepia, blend_factor)
+                # Ein einfacher Sepia-Effekt
+                sepia = []
+                for i in range(255):
+                    sepia.append((int(i * 240 / 255), int(i * 200 / 255), int(i * 145 / 255)))
+                return img.convert("L").point(sepia).convert("RGB")
             elif filter_name == "Posterize":
-                bits = max(1, min(8, int(round((1 - strength) * 7) + 1)))
+                bits = max(1, min(8, int(strength)))
                 return ImageOps.posterize(img, bits)
             elif filter_name == "Solarize":
-                threshold = int((1 - strength) * 255)
+                threshold = int(strength * 255) if strength <= 1 else 255
                 return ImageOps.solarize(img, threshold=threshold)
             elif filter_name == "Kantenerkennung":
-                blend_factor = min(max(strength, 0), 1)
-                effect = img.filter(ImageFilter.FIND_EDGES)
-                return Image.blend(img, effect, blend_factor)
+                return img.filter(ImageFilter.FIND_EDGES)
             elif filter_name == "Emboss":
-                blend_factor = min(max(strength, 0), 1)
-                effect = img.filter(ImageFilter.EMBOSS)
-                return Image.blend(img, effect, blend_factor)
+                return img.filter(ImageFilter.EMBOSS)
             elif filter_name == "Edge Enhance":
-                blend_factor = min(max(strength, 0), 1)
-                effect = img.filter(ImageFilter.EDGE_ENHANCE)
-                return Image.blend(img, effect, blend_factor)
+                return img.filter(ImageFilter.EDGE_ENHANCE)
             elif filter_name == "Detail":
-                blend_factor = min(max(strength, 0), 1)
-                effect = img.filter(ImageFilter.DETAIL)
-                return Image.blend(img, effect, blend_factor)
+                return img.filter(ImageFilter.DETAIL)
             elif filter_name == "Smooth":
-                blend_factor = min(max(strength, 0), 1)
-                effect = img.filter(ImageFilter.SMOOTH)
-                return Image.blend(img, effect, blend_factor)
+                return img.filter(ImageFilter.SMOOTH)
             elif filter_name == "Binarize":
-                blend_factor = min(max(strength, 0), 1)
-                gray = img.convert("L")
-                effect = gray.point(lambda x: 255 if x > 128 else 0).convert("RGB")
-                return Image.blend(img, effect, blend_factor)
+                img_gray = img.convert("L")
+                return img_gray.point(lambda x: 255 if x > 128 else 0).convert("RGB")
             elif filter_name == "Gamma Correction":
-                gamma = 2.0
+                gamma = strength if strength != 0 else 1.0
                 inv_gamma = 1.0 / gamma
                 table = [int((i / 255.0) ** inv_gamma * 255) for i in range(256)]
-                effect = img.point(table * 3)
-                blend_factor = min(max(strength, 0), 1)
-                return Image.blend(img, effect, blend_factor)
+                return img.point(table * 3)
             elif filter_name == "Adaptive Threshold":
-                blend_factor = min(max(strength, 0), 1)
-                effect = ImageOps.autocontrast(img)
-                return Image.blend(img, effect, blend_factor)
+                # Hier könnte eine adaptive Schwellenwertbestimmung implementiert werden; vorerst Autocontrast
+                return ImageOps.autocontrast(img)
             elif filter_name == "Color Boost":
                 enhancer = ImageEnhance.Color(img)
-                effect = enhancer.enhance(2.0)
-                blend_factor = min(max(strength, 0), 1)
-                return Image.blend(img, effect, blend_factor)
+                return enhancer.enhance(strength)
             elif filter_name == "Custom":
+                # Kein spezieller Effekt implementiert
                 return img.copy()
             else:
                 return img.copy()
@@ -412,7 +400,7 @@ class ImageProcessorApp:
             filter_info = []
             for i, (enabled_var, filter_var, strength_var) in enumerate(self.layer_vars):
                 if enabled_var.get():
-                    filter_info.append(f"{i+1}_{filter_var.get()}_{strength_var.get():.2f}")
+                    filter_info.append(f"{i + 1}_{filter_var.get()}_{strength_var.get():.1f}")
             default_name = ""
             if self.filename:
                 base = os.path.splitext(self.filename)[0]
@@ -430,31 +418,6 @@ class ImageProcessorApp:
                 except Exception as e:
                     messagebox.showerror("Fehler", f"Speichern fehlgeschlagen: {str(e)}")
 
-    def load_settings(self):
-        prog_path = get_program_path()
-        file_path = filedialog.askopenfilename(
-            initialdir=prog_path,
-            filetypes=[("JSON-Dateien", "*.json"), ("Alle Dateien", "*.*")],
-            title="Einstellungen laden"
-        )
-        if file_path:
-            try:
-                with open(file_path, 'r') as f:
-                    settings = json.load(f)
-                self.poppler_path = settings.get("poppler_path", "")
-                for setting in settings.get("layers", []):
-                    layer_idx = setting["layer"] - 1
-                    if layer_idx < len(self.layer_vars):
-                        enabled_var, filter_var, strength_var = self.layer_vars[layer_idx]
-                        enabled_var.set(setting.get("enabled", False))
-                        filter_var.set(setting.get("filter", self.filter_options[0]))
-                        strength_var.set(setting.get("strength", 1.0))
-                self.settings_file_name = os.path.basename(file_path)
-                self.settings_label.config(text="Einstellungen: " + self.settings_file_name)
-                messagebox.showinfo("Erfolg", "Einstellungen erfolgreich geladen.")
-                self.update_image()
-            except Exception as e:
-                messagebox.showerror("Fehler", f"Laden fehlgeschlagen: {str(e)}")
 
 if __name__ == "__main__":
     root = tk.Tk()
